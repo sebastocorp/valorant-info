@@ -109,50 +109,48 @@ fun ALRow(character: AgentListItemResponse, action: () -> Unit) {
     val descPaddingStart = 16.dp
     val descPaddingEnd = 2.dp
 
-    if (character.isPlayable) {
-        Row(modifier = Modifier
-            .padding(padding)
-            .clickable { action() }) {
-            AsyncImage(
-                model = character.icon,
-                contentDescription = character.name,
+    Row(modifier = Modifier
+        .padding(padding)
+        .clickable { action() }) {
+        AsyncImage(
+            model = character.icon,
+            contentDescription = character.name,
+            modifier = Modifier
+                .size(size = imgSize)
+                .padding(all = imgPadding)
+                .border(imgBorderSize, MaterialTheme.colors.secondary, CircleShape)
+                .background(color = Color.Gray, shape = CircleShape)
+                .clip(shape = CircleShape)
+        )
+        Column() {
+            Text(
+                text = character.name,
+                textAlign = TextAlign.Left,
+                fontSize = nameSize,
                 modifier = Modifier
-                    .size(size = imgSize)
-                    .padding(all = imgPadding)
-                    .border(imgBorderSize, MaterialTheme.colors.secondary, CircleShape)
-                    .background(color = Color.Gray, shape = CircleShape)
-                    .clip(shape = CircleShape)
+                    .padding(
+                        top = namePaddingTop,
+                        bottom = namePaddingBottom,
+                        start = namePaddingStart,
+                        end = namePaddingEnd,
+                    )
+                    .fillMaxWidth()
             )
-            Column() {
-                Text(
-                    text = character.name,
-                    textAlign = TextAlign.Left,
-                    fontSize = nameSize,
-                    modifier = Modifier
-                        .padding(
-                            top = namePaddingTop,
-                            bottom = namePaddingBottom,
-                            start = namePaddingStart,
-                            end = namePaddingEnd,
-                        )
-                        .fillMaxWidth()
-                )
-                Text(
-                    text = character.description,
-                    textAlign = TextAlign.Left,
-                    fontSize = descSize,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier
-                        .padding(
-                            top = descPaddingTop,
-                            bottom = descPaddingBottom,
-                            start = descPaddingStart,
-                            end = descPaddingEnd,
-                        )
-                        .fillMaxWidth()
-                )
-            }
+            Text(
+                text = character.description,
+                textAlign = TextAlign.Left,
+                fontSize = descSize,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier
+                    .padding(
+                        top = descPaddingTop,
+                        bottom = descPaddingBottom,
+                        start = descPaddingStart,
+                        end = descPaddingEnd,
+                    )
+                    .fillMaxWidth()
+            )
         }
     }
 }
