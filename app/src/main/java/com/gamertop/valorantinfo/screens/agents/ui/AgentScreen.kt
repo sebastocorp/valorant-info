@@ -45,7 +45,7 @@ fun AgentScreenToolbar(navController: NavHostController) {
     TopAppBar(
         title = {
             Text(
-                text = "Valorant Agent",
+                text = "Agent",
                 textAlign = TextAlign.Right,
                 modifier = Modifier
                     .fillMaxWidth()

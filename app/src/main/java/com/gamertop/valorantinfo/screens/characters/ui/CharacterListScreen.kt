@@ -61,7 +61,7 @@ fun CharacterListScreenToolbar(navController: NavHostController) {
     TopAppBar(
         title = {
             Text(
-                text = "Valorant Characters",
+                text = "Character List",
                 textAlign = TextAlign.Right,
                 modifier = Modifier
                     .fillMaxWidth()

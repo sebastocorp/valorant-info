@@ -64,7 +64,7 @@ fun SetupNavGraph(
         }
         // Map list screen
         composable(
-            route = Screen.Maps.route
+            route = Screen.MapList.route
         ){
             MapsScreen(navController)
         }
