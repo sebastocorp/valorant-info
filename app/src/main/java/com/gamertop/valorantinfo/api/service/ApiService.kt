@@ -15,5 +15,11 @@ interface ApiService {
     suspend fun getAgentList(): Response<AgentListDataResponse>
 
     @GET("/v1/agents/{uuid}")
-    suspend fun getAgent(@Path("uuid") characterUuid: String): Response<AgentDataResponse>
+    suspend fun getAgent(@Path("uuid") agentUuid: String): Response<AgentDataResponse>
+
+    @GET("/v1/maps")
+    suspend fun getMapList(): Response<MapListDataResponse>
+
+    @GET("/v1/maps/{uuid}")
+    suspend fun getMap(@Path("uuid") mapUuid: String): Response<MapDataResponse>
 }

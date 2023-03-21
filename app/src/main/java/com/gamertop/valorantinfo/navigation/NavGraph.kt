@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.gamertop.valorantinfo.screens.AGENT_ARGUMENT_KEY
 import com.gamertop.valorantinfo.screens.CHARACTER_ARGUMENT_KEY
+import com.gamertop.valorantinfo.screens.MAP_ARGUMENT_KEY
 import com.gamertop.valorantinfo.screens.Screen
 import com.gamertop.valorantinfo.screens.agents.AgentListViewModel
 import com.gamertop.valorantinfo.screens.agents.AgentViewModel
@@ -18,7 +19,10 @@ import com.gamertop.valorantinfo.screens.characters.CharacterViewModel
 import com.gamertop.valorantinfo.screens.characters.ui.CharacterListScreen
 import com.gamertop.valorantinfo.screens.characters.ui.CharacterScreen
 import com.gamertop.valorantinfo.screens.home.ui.HomeScreen
-import com.gamertop.valorantinfo.screens.maps.ui.MapsScreen
+import com.gamertop.valorantinfo.screens.maps.MapListViewModel
+import com.gamertop.valorantinfo.screens.maps.MapViewModel
+import com.gamertop.valorantinfo.screens.maps.ui.MapListScreen
+import com.gamertop.valorantinfo.screens.maps.ui.MapScreen
 
 @Composable
 fun SetupNavGraph(
@@ -66,7 +70,16 @@ fun SetupNavGraph(
         composable(
             route = Screen.MapList.route
         ){
-            MapsScreen(navController)
+            MapListScreen(navController, MapListViewModel())
+        }
+        // Single map screen
+        composable(
+            route = Screen.Map.route,
+            arguments = listOf(navArgument(MAP_ARGUMENT_KEY){
+                type = NavType.StringType
+            })
+        ){
+            MapScreen(navController, MapViewModel(), it.arguments?.getString(MAP_ARGUMENT_KEY).toString())
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.gamertop.valorantinfo.screens.agents.ui
+package com.gamertop.valorantinfo.screens.maps.ui
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
@@ -17,37 +17,34 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
-import com.gamertop.valorantinfo.api.service.AgentListItemResponse
+import com.gamertop.valorantinfo.api.service.MapListItemResponse
 import com.gamertop.valorantinfo.screens.Screen
-import com.gamertop.valorantinfo.screens.agents.AgentListViewModel
+import com.gamertop.valorantinfo.screens.maps.MapListViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 
 // Previews
-@Preview(name = "Agents view Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+@Preview(name = "Maps view Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
-fun AgentListScreenPreview() {
-    AgentListScreen(navController = rememberNavController(), AgentListViewModel())
+fun MapListScreenPreview() {
+    MapListScreen(navController = rememberNavController(), MapListViewModel())
 }
 
-@Preview(name = "CLRow view Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+@Preview(name = "MLRow view Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
-fun ALRowPreview() {
-    ALRow(
-        agent = AgentListItemResponse(
+fun MLRowPreview() {
+    MLRow(
+        map = MapListItemResponse(
             name = "default",
             uuid = "uuid",
-            description = "desc",
-            icon = "url",
-            isPlayable = true
+            icon = "url"
         ),
         action = {}
     )
@@ -55,13 +52,13 @@ fun ALRowPreview() {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Agent list screen toolbar
+// Map list screen toolbar
 @Composable
-fun AgentListScreenToolbar(navController: NavHostController) {
+fun MapListScreenToolbar(navController: NavHostController) {
     TopAppBar(
         title = {
             Text(
-                text = "Agent List",
+                text = "Map List",
                 textAlign = TextAlign.Right,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -85,97 +82,75 @@ fun AgentListScreenToolbar(navController: NavHostController) {
     )
 }
 
-// Agent list screen Body
-fun agentListSetup(coroutineScope: CoroutineScope, viewModel: AgentListViewModel) {
+// Map list screen Body
+fun mapListSetup(coroutineScope: CoroutineScope, viewModel: MapListViewModel) {
     coroutineScope.launch {
-        viewModel.getAgentList()
+        viewModel.getMapList()
     }
 }
 
 @Composable
-fun ALRow(agent: AgentListItemResponse, action: () -> Unit) {
+fun MLRow(map: MapListItemResponse, action: () -> Unit) {
     val padding = 2.dp
     val imgSize = 70.dp
     val imgPadding = 2.dp
     val imgBorderSize = 1.dp
-    val nameSize = 30.sp
+    val nameSize = 46.sp
     val namePaddingTop = 2.dp
     val namePaddingBottom = 2.dp
     val namePaddingStart = 16.dp
     val namePaddingEnd = 2.dp
-    val descSize = 15.sp
-    val descPaddingTop = 2.dp
-    val descPaddingBottom = 2.dp
-    val descPaddingStart = 16.dp
-    val descPaddingEnd = 2.dp
 
     Row(modifier = Modifier
         .padding(padding)
         .clickable { action() }) {
         AsyncImage(
-            model = agent.icon,
-            contentDescription = agent.name,
+            model = map.icon,
+            contentDescription = map.name,
             modifier = Modifier
                 .size(size = imgSize)
                 .padding(all = imgPadding)
                 .border(imgBorderSize, MaterialTheme.colors.secondary, CircleShape)
-                .background(color = Color.Gray, shape = CircleShape)
+                .background(color = Color.White, shape = CircleShape)
                 .clip(shape = CircleShape)
         )
-        Column() {
-            Text(
-                text = agent.name,
-                textAlign = TextAlign.Left,
-                fontSize = nameSize,
-                modifier = Modifier
-                    .padding(
-                        top = namePaddingTop,
-                        bottom = namePaddingBottom,
-                        start = namePaddingStart,
-                        end = namePaddingEnd,
-                    )
-                    .fillMaxWidth()
-            )
-            Text(
-                text = agent.description,
-                textAlign = TextAlign.Left,
-                fontSize = descSize,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                modifier = Modifier
-                    .padding(
-                        top = descPaddingTop,
-                        bottom = descPaddingBottom,
-                        start = descPaddingStart,
-                        end = descPaddingEnd,
-                    )
-                    .fillMaxWidth()
-            )
-        }
+        Text(
+            text = map.name,
+            textAlign = TextAlign.Left,
+            fontSize = nameSize,
+            modifier = Modifier
+                .padding(
+                    top = namePaddingTop,
+                    bottom = namePaddingBottom,
+                    start = namePaddingStart,
+                    end = namePaddingEnd,
+                )
+                .fillMaxWidth()
+        )
     }
 }
 
 @Composable
-fun AgentListScreenBody(navController: NavHostController, viewModel: AgentListViewModel) {
-    val isLoading: Boolean by viewModel.isAgentListLoading.observeAsState(initial = true)
-    val agentList: List<AgentListItemResponse> by viewModel.agentList.observeAsState(initial = emptyList())
+fun MapListScreenBody(navController: NavHostController, viewModel: MapListViewModel) {
+    val isLoading: Boolean by viewModel.isMapListLoading.observeAsState(initial = true)
+    val mapList: List<MapListItemResponse> by viewModel.mapList.observeAsState(initial = emptyList())
     val coroutineScope = rememberCoroutineScope()
 
     if (isLoading) {
         Box(Modifier.fillMaxSize()) {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
         }
-        agentListSetup(coroutineScope, viewModel)
+        mapListSetup(coroutineScope, viewModel)
     } else {
         Box(modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)) {
             LazyColumn () {
-                agentList.forEach{
+                mapList.forEach{
                     item {
-                        ALRow(it, action = {
-                            navController.navigate(route = Screen.Agent.passUuid(it.uuid)) {
-                                popUpTo(Screen.Agent.route) {
+                        MLRow(it, action = {
+                            navController.navigate(route = Screen.Map.passUuid(it.uuid)) {
+                                popUpTo(Screen.Map.route) {
                                     inclusive = true
                                 }
                             }
@@ -187,11 +162,11 @@ fun AgentListScreenBody(navController: NavHostController, viewModel: AgentListVi
     }
 }
 
-// Agent List screen
+// Map List screen
 @Composable
-fun AgentListScreen(navController: NavHostController, viewModel: AgentListViewModel) {
+fun MapListScreen(navController: NavHostController, viewModel: MapListViewModel) {
     Scaffold(
-        topBar = { AgentListScreenToolbar(navController = navController) },
-        content = { AgentListScreenBody(navController = navController, viewModel) }
+        topBar = { MapListScreenToolbar(navController = navController) },
+        content = { MapListScreenBody(navController = navController, viewModel) }
     )
 }

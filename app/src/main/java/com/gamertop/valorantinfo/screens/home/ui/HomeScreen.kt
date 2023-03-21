@@ -110,11 +110,11 @@ fun HomeScreenBody(navController: NavHostController) {
             HSRow(row = row, action = {
                 navController.navigate(route = Screen.AgentList.route)
             })
-//            row.img.url = "https://cdn.onlinewebfonts.com/svg/img_465777.png"
-//            row.text.text = "Mapas"
-//            HSRow(row = row, action = {
-//                navController.navigate(route = Screen.Maps.route)
-//            })
+            row.img.url = "https://cdn.onlinewebfonts.com/svg/img_465777.png"
+            row.text.text = "Mapas"
+            HSRow(row = row, action = {
+                navController.navigate(route = Screen.MapList.route)
+            })
         }
     }
 }
