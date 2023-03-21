@@ -6,9 +6,13 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.gamertop.valorantinfo.screens.AGENT_ARGUMENT_KEY
 import com.gamertop.valorantinfo.screens.CHARACTER_ARGUMENT_KEY
 import com.gamertop.valorantinfo.screens.Screen
-import com.gamertop.valorantinfo.screens.agents.ui.AgentsScreen
+import com.gamertop.valorantinfo.screens.agents.AgentListViewModel
+import com.gamertop.valorantinfo.screens.agents.AgentViewModel
+import com.gamertop.valorantinfo.screens.agents.ui.AgentListScreen
+import com.gamertop.valorantinfo.screens.agents.ui.AgentScreen
 import com.gamertop.valorantinfo.screens.characters.CharacterListViewModel
 import com.gamertop.valorantinfo.screens.characters.CharacterViewModel
 import com.gamertop.valorantinfo.screens.characters.ui.CharacterListScreen
@@ -32,8 +36,7 @@ fun SetupNavGraph(
         composable(
             route = Screen.CharacterList.route
         ){
-            val characterListViewModel = CharacterListViewModel()
-            CharacterListScreen(navController, characterListViewModel)
+            CharacterListScreen(navController, CharacterListViewModel())
         }
         // Single character screen
         composable(
@@ -42,14 +45,24 @@ fun SetupNavGraph(
                 type = NavType.StringType
             })
         ){
-            val characterViewModel = CharacterViewModel()
-            CharacterScreen(navController, characterViewModel, it.arguments?.getString(CHARACTER_ARGUMENT_KEY).toString())
+            CharacterScreen(navController, CharacterViewModel(), it.arguments?.getString(CHARACTER_ARGUMENT_KEY).toString())
         }
+        // Agent list screen
         composable(
-            route = Screen.Agents.route
+            route = Screen.AgentList.route
         ){
-            AgentsScreen(navController)
+            AgentListScreen(navController, AgentListViewModel())
         }
+        // Single agent screen
+        composable(
+            route = Screen.Agent.route,
+            arguments = listOf(navArgument(AGENT_ARGUMENT_KEY){
+                type = NavType.StringType
+            })
+        ){
+            AgentScreen(navController, AgentViewModel(), it.arguments?.getString(AGENT_ARGUMENT_KEY).toString())
+        }
+        // Map list screen
         composable(
             route = Screen.Maps.route
         ){
